@@ -1,5 +1,8 @@
 <template>
-  <q-page padding>{{ $route.params.evento }}</q-page>
+  <q-page padding>
+    {{ $route.params.evento }}
+    <q-btn label="torna indietro" @click="$router.push('/')" />
+  </q-page>
 </template>
 
 <script>

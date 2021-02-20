@@ -14,7 +14,7 @@
               v-ripple
               v-for="evento in eventi"
               :key="evento.slug"
-              @click="$router.replace('/'+evento.slug+'/')"
+              @click="$router.push('/'+evento.slug+'/')"
             >
               <q-item-section>
                 {{evento.titolo}}
