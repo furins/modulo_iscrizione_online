@@ -47,7 +47,7 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       distDir: '../backend/iscrizioni/static/',
-      publicPath: '/static'
+      publicPath: 'static',
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)

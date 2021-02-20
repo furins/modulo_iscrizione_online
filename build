@@ -1,0 +1,53 @@
+#!/bin/bash
+set -e
+
+# mi assicuro di avere i file necessari 
+pip install -r development_tools/requirements.dev --quiet
+
+# carico le variabili d'ambiente per la compilazione e il deployement
+set -o allexport
+[[ -f .env.dev ]] && source .env.dev
+set +o allexport
+
+NEXTRELEASE=$(cat development_tools/RELEASE | awk -F. -v OFS=. '{$NF++;print}')
+NEXTVERSION=$(cat development_tools/VERSION).$NEXTRELEASE
+DIST_DIR="dist/$APP_NAME"
+
+rm -rf ./dist
+mkdir -p $DIST_DIR
+
+cd frontend
+quasar build
+cd - > /dev/null
+
+cd backend
+python manage.py makemigrations
+cd - > /dev/null
+
+# esportazione cartella dist
+cp -r backend/* $DIST_DIR
+
+# generazione file statici
+cd backend
+python manage.py collectstatic --clear
+cd - > /dev/null
+
+# licenze proprie e di terze parti
+licen mit > $DIST_DIR/LICENSE.md
+echo -e "\r\n\r\n- [NPM PACKAGES USED BY THIS APP] -\r\n" > $DIST_DIR/THIRD_PARTY_LICENSES.md
+cd frontend
+./node_modules/license-report/index.js --only=prod --output=table >> ../$DIST_DIR/THIRD_PARTY_LICENSES.md
+cd - > /dev/null
+echo -e "\r\n\r\n- [PYTHON PACKAGES USED BY THIS APP] -\r\n" >> $DIST_DIR/THIRD_PARTY_LICENSES.md
+pip-licenses --order=license --format=plain --with-authors --with-urls >> $DIST_DIR/THIRD_PARTY_LICENSES.md
+echo -e "\r\n\r\n- [LICENSES TEXT] -\r\n" >> $DIST_DIR/THIRD_PARTY_LICENSES.md
+
+cd frontend
+yarn licenses generate-disclaimer >> ../$DIST_DIR/THIRD_PARTY_LICENSES.md
+cd - > /dev/null
+pip-licenses --order=license --format=plain-vertical --with-license-file --no-license-path >> $DIST_DIR/THIRD_PARTY_LICENSES.md
+
+cp $DIST_DIR/LICENSE.md ./LICENSE.md
+cp $DIST_DIR/THIRD_PARTY_LICENSES.md ./THIRD_PARTY_LICENSES.md
+echo $NEXTRELEASE > development_tools/RELEASE
+

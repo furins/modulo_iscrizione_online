@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+# carico il file con le variabili d'ambiente
+set -o allexport
+[[ -f .env ]] && source .env
+[[ -f .env.dev ]] && source .env.dev
+set +o allexport
+
+case $1 in
+    init)
+        cd development_tools
+        pip install -r requirements.dev --quiet
+        docker-compose --log-level ERROR --env-file ../.env.dev up --detach 
+        cd - > /dev/null
+
+        # determino l'id del container del database
+        CONTAINER_ID=`docker ps --filter "label=it.iloa.container_prefix=${APP_NAME}" --filter="ancestor=postgres" -q`
+
+        # creo il database se non esiste
+        set +e
+        docker exec -it $CONTAINER_ID createdb -U $POSTGRES_USER $POSTGRES_DB > /dev/null
+        set -e
+        ;;
+    db)
+        case $2 in
+            start)
+                cd development_tools
+                docker-compose --env-file ../.env.dev up --detach
+                cd - > /dev/null
+            ;;
+            stop)
+                cd development_tools
+                docker-compose --env-file ../.env.dev stop
+                cd - > /dev/null
+            ;;
+            *)
+                echo "comandi per la gestione del database"
+                echo "manca il secondo parametro, o il parametro inserito non è valido"
+                exit 2
+                ;;
+        esac
+        ;;
+    *)
+        echo "comando non riconosciuto"
+        exit 1
+        ;;
+esac
