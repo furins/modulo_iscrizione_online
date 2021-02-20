@@ -1,8 +1,11 @@
 """webapp URL Configuration"""
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
 import iscrizioni.views
 
+admin.site.site_header = f'Manager eventi rev.{settings.APP_VERSION}'
+admin.site.index_title = 'Amministrazione eventi'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -18,8 +18,10 @@ mkdir -p $DIST_DIR
 
 
 gsed -i "s/version:.*,/version: '$NEXTVERSION',/" ./frontend/src/boot/version.js
+gsed -i "s/APP_VERSION = .*/APP_VERSION = '$NEXTVERSION'/" ./backend/webapp/settings.py
 
 cd frontend
+icongenie generate -i icon.png
 quasar build
 cd - > /dev/null
 

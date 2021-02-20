@@ -58,6 +58,7 @@
                 type="a"
               />
             </div>
+            <div class="q-py-none text-right muted">rev. {{$application_built.version}}</div>
           </q-card-section>
         </div>
       </q-card-section>
@@ -77,7 +78,9 @@
     max-width: 50vw;
   }
 }
-
+.muted {
+  color: #eee;
+}
 .lista {
   background-color: $secondary;
 }
