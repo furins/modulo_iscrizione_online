@@ -3,6 +3,8 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from uuslug import uuslug as slugify
+from django.core.exceptions import ValidationError
 
 
 class Utente(models.Model):
@@ -11,17 +13,33 @@ class Utente(models.Model):
     cognome = models.CharField(max_length=100)
     azienda = models.TextField(blank=True)
     indirizzo = models.TextField(blank=True)
+    telefono = models.CharField(max_length=100, blank=True)
     email = models.EmailField()
+    email_validata = models.BooleanField(default=False)
+    accettazione_privacy = models.BooleanField(default=False)
     ordine_di_appartenenza = models.ForeignKey(
-        'Ordine', on_delete=models.SET_NULL, null=True)
+        'Ordine', on_delete=models.SET_NULL, null=True, blank=True)
     matricola_ordine = models.CharField(max_length=50, blank=True)
     regione = models.ForeignKey(
-        'Regione', on_delete=models.SET_NULL, null=True)
+        'Regione', on_delete=models.SET_NULL, null=True, blank=True)
     provincia = models.CharField(max_length=50, blank=True)
     ultima_modifica = models.DateTimeField(auto_now_add=True)
-    accettazione_privacy = models.BooleanField(default=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL, null=True)  # nel caso si desideri dare accesso all'utente ad un area riservata
+                             on_delete=models.SET_NULL, null=True, blank=True)  # nel caso si desideri dare accesso all'utente ad un area riservata
+
+    class Meta:
+        verbose_name = 'utente registrato'
+        verbose_name_plural = 'utenti registrati'
+        ordering = ['cognome', 'nome']
+
+    def clean(self):
+        # Non posso autorizzare il salvataggio se non è stata autorizzata la clausola sulla privacy.
+        if self.accettazione_privacy == False:
+            raise ValidationError(
+                _('È necessario accettare la clausola relativa alla privacy.'))
+
+    def __str__(self):
+        return f'{self.cognome} {self.nome}'
 
 
 class Iscrizione(models.Model):
@@ -33,11 +51,18 @@ class Iscrizione(models.Model):
     richieste_dell_iscritto = models.TextField(blank=True)
     pagamento_ricevuto = models.BooleanField(default=False)
     importo_ricevuto = models.DecimalField(
-        max_digits=5, decimal_places=2, default=Decimal(0.0))
+        max_digits=5, decimal_places=2, default=Decimal(0.0), blank=True)
     data_iscrizione = models.DateTimeField(auto_now_add=True)
-    data_pagamento = models.DateTimeField(null=True)
+    data_pagamento = models.DateTimeField(null=True, blank=True)
     richiede_crediti = models.BooleanField(default=False)
     iscrizione_newsletter = models.BooleanField(default=None, null=True)
+
+    class Meta:
+        verbose_name_plural = 'iscrizioni'
+        ordering = ['iscritto__cognome', 'iscritto__nome']
+
+    def __str__(self):
+        return f'Iscrizione di {self.iscritto} all\'evento {self.evento}'
 
 
 class AllegatiPossibili(models.Model):
@@ -68,19 +93,34 @@ class AllegatoIscrizione(models.Model):
 
 class Evento(models.Model):
     """è la descrizione di un evento"""
-    inizio_iscrizioni = models.DateTimeField(null=True)
-    termine_iscrizioni = models.DateTimeField(null=True)
-    iscrizione_aperta = models.BooleanField(default=True)
-    richiede_autenticazione = models.BooleanField(default=False)
     nome_evento = models.CharField(max_length=200)
-
     descrizione = models.TextField(blank=True)
-    immagine = models.ImageField(null=True)
+
+    iscrizione_aperta = models.BooleanField(default=True)
+    inizio_iscrizioni = models.DateTimeField(blank=True, null=True)
+    termine_iscrizioni = models.DateTimeField(blank=True, null=True)
+
+    richiede_autenticazione = models.BooleanField(
+        default=False, help_text="spuntare questa casella se si desidera che l'utente possa accedere a una pagina dove potrà gestire la propria iscrizione, ad esempio per inviare un abstract")
+
+    immagine = models.ImageField(blank=True, null=True)
     # slug viene usato per creare l'url dell'evento
-    slug = models.SlugField(max_length=20, unique=True)
+    slug = models.SlugField(max_length=30, unique=True, blank=True)
+
     # modello_form_evento è un descrittore per capire quale template usare per il form di iscrizione all'evento o per le pagine di supporto (landing page, descrizione...)
     modello_form_evento = models.CharField(max_length=20, blank=True)
     link = models.URLField(blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Eventi'
+        ordering = ['-inizio_iscrizioni']
+
+    def save(self, **kwargs):
+        self.slug = slugify(self.nome_evento, instance=self)
+        super(Evento, self).save(**kwargs)
+
+    def __str__(self):
+        return self.nome_evento
 
 
 class TipoAzione(models.TextChoices):
