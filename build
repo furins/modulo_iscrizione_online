@@ -26,6 +26,10 @@ cd - > /dev/null
 
 # esportazione cartella dist
 cp -r backend/* $DIST_DIR
+cd backend
+python -Bc "import pathlib; [p.unlink() for p in pathlib.Path('.').rglob('*.py[co]')]"
+python -Bc "import pathlib; [p.rmdir() for p in pathlib.Path('.').rglob('__pycache__')]"
+cd - > /dev/null
 
 # generazione file statici
 cd backend
