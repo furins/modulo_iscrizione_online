@@ -1,4 +1,4 @@
-"""cirf URL Configuration"""
+"""webapp URL Configuration"""
 from django.contrib import admin
 from django.urls import path
 import iscrizioni.views
