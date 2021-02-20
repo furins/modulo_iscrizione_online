@@ -12,6 +12,30 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    CORS_ALLOWED_ORIGINS=(list, []),
+)
+
+# reading .env file
+environ.Env.read_env('../.env')
+
+sentry_sdk.init(
+    dsn=env('DJANGO_SENTRY_DSN_URL'),
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +44,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'rf8n04@&#4(*uxh-s(i(=_a+0(d*6j0f$r6up_37u62te_at%@'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -55,11 +79,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://eventi.cirf.org",
-    "http://localhost:8080",
-    "http://localhost:8081",
-]
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -89,12 +109,12 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cirf',
-        'USER': 'postgres',
-        'PASSWORD': 'cirf',
-        'HOST': '127.0.0.1',
-        'PORT': '54320'
+        'ENGINE': env('DB_ENGINE'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT')
     }
 }
 
@@ -136,6 +156,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# path da configurare solo per la macchina di development, in quanto in produzione non si ha mai accesso alla cartella
 STATIC_ROOT = os.path.join(BASE_DIR, '../dist/static/')
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'iscrizioni/static'),)
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'

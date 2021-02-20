@@ -16,6 +16,9 @@ DIST_DIR="dist/$APP_NAME"
 rm -rf ./dist
 mkdir -p $DIST_DIR
 
+
+gsed -i "s/version:.*,/version: '$NEXTVERSION',/" ./frontend/src/boot/version.js
+
 cd frontend
 quasar build
 cd - > /dev/null

@@ -7,6 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 const envparser = require('./src/config/envparser')
+const version = '0.0.0';
 
 module.exports = function (/* ctx */) {
   return {
@@ -20,9 +21,10 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-
       'i18n',
       'axios',
+      'sentry',
+      'version',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

@@ -19,7 +19,7 @@ case $1 in
 
         # creo il database se non esiste
         set +e
-        docker exec -it $CONTAINER_ID createdb -U $POSTGRES_USER $POSTGRES_DB > /dev/null
+        docker exec -it $CONTAINER_ID createdb -U $DB_USER $DB_NAME > /dev/null
         set -e
         ;;
     frontend)
