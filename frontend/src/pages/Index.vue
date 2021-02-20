@@ -91,7 +91,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8000/api/list/")
+      .get(process.env.API_SERVER_URL + "/api/list/")
       .then(response => (this.eventi = response.data.eventi));
   }
 };

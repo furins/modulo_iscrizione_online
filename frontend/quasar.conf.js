@@ -6,6 +6,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
+const envparser = require('./src/config/envparser')
 
 module.exports = function (/* ctx */) {
   return {
@@ -48,6 +49,7 @@ module.exports = function (/* ctx */) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       distDir: '../backend/iscrizioni/static/',
       publicPath: 'static',
+      env: envparser(),
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
