@@ -50,6 +50,7 @@ module.exports = function (/* ctx */) {
       distDir: '../backend/iscrizioni/static/',
       publicPath: 'static',
       env: envparser(),
+      devtool: 'source-map',
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -59,7 +60,7 @@ module.exports = function (/* ctx */) {
 
       // rtl: false, // https://quasar.dev/options/rtl-support
       // preloadChunks: true,
-      // showProgress: false,
+      showProgress: false,
       // gzip: true,
       // analyze: true,
 
