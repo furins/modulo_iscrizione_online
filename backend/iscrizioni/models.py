@@ -91,6 +91,10 @@ class AllegatoIscrizione(models.Model):
     )
 
 
+class TemplateEvento(models.TextChoices):
+    DEFAULT = 'default', _('Default')
+
+
 class Evento(models.Model):
     """è la descrizione di un evento"""
     nome_evento = models.CharField(max_length=200)
@@ -108,7 +112,8 @@ class Evento(models.Model):
     slug = models.SlugField(max_length=30, unique=True, blank=True)
 
     # modello_form_evento è un descrittore per capire quale template usare per il form di iscrizione all'evento o per le pagine di supporto (landing page, descrizione...)
-    modello_form_evento = models.CharField(max_length=20, blank=True)
+    modello_form_evento = models.CharField(
+        max_length=20, choices=TemplateEvento.choices, default="default")
     link = models.URLField(blank=True)
 
     class Meta:
