@@ -1,0 +1,21 @@
+/* roboto-slab-regular - latin */
+// https://forum.quasar-framework.org/topic/3201/completely-replace-roboto-with-another-font-v1/11
+// https://google-webfonts-helper.herokuapp.com/fonts/roboto-slab?subsets=latin
+@font-face {
+  font-family: "Roboto Slab";
+  font-style: normal;
+  font-weight: 400;
+  src: url("~assets/fonts/roboto-slab-v13-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+    url("~assets/fonts/roboto-slab-v13-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("~assets/fonts/roboto-slab-v13-latin-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("~assets/fonts/roboto-slab-v13-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("~assets/fonts/roboto-slab-v13-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("~assets/fonts/roboto-slab-v13-latin-regular.svg#RobotoSlab")
+      format("svg"); /* Legacy iOS */
+}

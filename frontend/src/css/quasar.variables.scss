@@ -23,6 +23,22 @@
 // $info      : #31CCEC;
 // $warning   : #F2C037;
 
+@import "~src/css/roboto-slab.scss";
+// Set the default font-family
+$typography-font-family: "Roboto slab", "-apple-system", "Helvetica Neue",
+  Helvetica, Arial, sans-serif !default;
+
+// Fix font-weight values to match the imported font family weights
+$text-weights: (
+  thin: 300,
+  light: 400,
+  regular: 600,
+  medium: 700,
+  bold: 800,
+  bolder: 800
+) !default;
+$button-font-weight: 600 !default; // or 400 if you prefer thinner
+
 $primary: #37414a;
 $primary-light: #4d5b68;
 $secondary: #8ad196;
