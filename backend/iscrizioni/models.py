@@ -7,22 +7,57 @@ from uuslug import uuslug as slugify
 from django.core.exceptions import ValidationError
 
 
+class TipoRegione(models.TextChoices):
+    ABRUZZO = "Abruzzo"
+    BASILICATA = "Basilicata"
+    CALABRIA = "Calabria"
+    CAMPANIA = "Campania"
+    EMILIA_ROMAGNA = "Emilia-Romagna"
+    FRIULI_VENEZIA_GIULIA = "Friuli-Venezia Giulia"
+    LAZIO = "Lazio"
+    LIGURIA = "Liguria"
+    LOMBARDIA = "Lombardia"
+    MARCHE = "Marche"
+    MOLISE = "Molise"
+    PIEMONTE = "Piemonte"
+    PUGLIA = "Puglia"
+    SARDEGNA = "Sardegna"
+    SICILIA = "Sicilia"
+    TOSCANA = "Toscana"
+    TRENTINO_ALTO_ADIGE = "Trentino-Alto Adige"
+    UMBRIA = "Umbria"
+    VALLE_D_AOSTA = "Valle d'Aosta"
+    VENETO = "Veneto"
+
+
+class TipoOrdine(models.TextChoices):
+    INGEGNERI = "Consiglio nazionale ingegneri",
+    ARCHITETTI = "Consiglio nazionale architetti, pianificatori, paesaggisti e conservatori",
+    CHIMICI = "Consiglio nazionale dei chimici",
+    GEOLOGI = "Consiglio nazionale dei geologi",
+    BIOLOGI = "Ordine nazionale dei biologi",
+    AGRONOMI = "Ordine nazionale dei dottori agronomi e dottori forestali"
+
+
 class Utente(models.Model):
     """è una persona nell'archivio CIRF, che ha partecipato ad almeno un evento"""
+    # FIXME eliminare email non validate se più vecchie di tot tempo?
     nome = models.CharField(max_length=100)
     cognome = models.CharField(max_length=100)
     azienda = models.TextField(blank=True)
     indirizzo = models.TextField(blank=True)
     telefono = models.CharField(max_length=100, blank=True)
-    email = models.EmailField()
+    codice_fiscale = models.CharField(max_length=16, blank=True)
+    email = models.EmailField(unique=True)
     email_validata = models.BooleanField(default=False)
     accettazione_privacy = models.BooleanField(default=False)
-    ordine_di_appartenenza = models.ForeignKey(
-        'Ordine', on_delete=models.SET_NULL, null=True, blank=True)
+    ordine_di_appartenenza = models.CharField(
+        max_length=73, null=True, blank=True, choices=TipoOrdine.choices
+    )
     matricola_ordine = models.CharField(max_length=50, blank=True)
-    regione = models.ForeignKey(
-        'Regione', on_delete=models.SET_NULL, null=True, blank=True)
-    provincia = models.CharField(max_length=50, blank=True)
+    regione = models.CharField(
+        max_length=21, choices=TipoRegione.choices, null=True, blank=True)
+    provincia = models.CharField(max_length=2, blank=True)
     ultima_modifica = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.SET_NULL, null=True, blank=True)  # nel caso si desideri dare accesso all'utente ad un area riservata
@@ -40,6 +75,12 @@ class Utente(models.Model):
 
     def __str__(self):
         return f'{self.cognome} {self.nome}'
+
+    def save(self, **kwargs):
+        self.provincia = self.provincia.upper() if self.provincia is not None else None
+        self.codice_fiscale = self.codice_fiscale.upper(
+        ) if self.codice_fiscale is not None else None
+        super(Utente, self).save(**kwargs)
 
 
 class Iscrizione(models.Model):
@@ -60,6 +101,12 @@ class Iscrizione(models.Model):
     class Meta:
         verbose_name_plural = 'iscrizioni'
         ordering = ['iscritto__cognome', 'iscritto__nome']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['iscritto', 'evento'],
+                name='iscrizione_ad_evento'
+            )
+        ]
 
     def __str__(self):
         return f'Iscrizione di {self.iscritto} all\'evento {self.evento}'
@@ -99,6 +146,12 @@ class Evento(models.Model):
     """è la descrizione di un evento"""
     nome_evento = models.CharField(max_length=200)
     descrizione = models.TextField(blank=True)
+    link = models.URLField(blank=True)
+    testo_link = models.CharField(max_length=100, blank=True)
+    immagine = models.ImageField(blank=True, null=True)
+
+    istruzioni_email = models.TextField(
+        blank=True, help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale)")
 
     iscrizione_aperta = models.BooleanField(default=True)
     inizio_iscrizioni = models.DateTimeField(blank=True, null=True)
@@ -107,14 +160,12 @@ class Evento(models.Model):
     richiede_autenticazione = models.BooleanField(
         default=False, help_text="spuntare questa casella se si desidera che l'utente possa accedere a una pagina dove potrà gestire la propria iscrizione, ad esempio per inviare un abstract")
 
-    immagine = models.ImageField(blank=True, null=True)
     # slug viene usato per creare l'url dell'evento
     slug = models.SlugField(max_length=30, unique=True, blank=True)
 
     # modello_form_evento è un descrittore per capire quale template usare per il form di iscrizione all'evento o per le pagine di supporto (landing page, descrizione...)
     modello_form_evento = models.CharField(
         max_length=20, choices=TemplateEvento.choices, default="default")
-    link = models.URLField(blank=True)
 
     class Meta:
         verbose_name_plural = 'Eventi'
@@ -163,9 +214,19 @@ class PrezzoEvento(models.Model):
 
 class AccreditamentoOrdine(models.Model):
     evento = models.ForeignKey('Evento', on_delete=models.CASCADE)
-    ordine = models.ForeignKey('Ordine', on_delete=models.CASCADE)
-    regione = models.ForeignKey('Regione', on_delete=models.CASCADE)
-    istruzioni = models.TextField(blank=True)
+    ordine = models.CharField(
+        max_length=73, choices=TipoOrdine.choices
+    )
+    regione = models.CharField(
+        max_length=21, choices=TipoRegione.choices, blank=True, help_text="lasciare vuoto per indicare tutte le regioni")
+    istruzioni = models.TextField(
+        blank=True, help_text="il testo verrà inserito nell'email di conferma iscrizione ed eventualmente ripetuto in email successive solo per gli utenti iscritti a questo evento e appartenenti a quest'ordine professionale.")
+
+    class Meta:
+        verbose_name_plural = 'accreditamenti ordini'
+
+    def __str__(self):
+        return f"{self.ordine} della regione {self.regione} per l'evento {self.evento}"
 
 
 class Attivita(models.Model):
@@ -182,11 +243,3 @@ class PartecipazioneAttivita(models.Model):
     iscritto = models.ForeignKey('Utente', on_delete=models.CASCADE)
     attivita = models.ForeignKey('Attivita', on_delete=models.CASCADE)
     data_partecipazione = models.DateTimeField(auto_now_add=True)
-
-
-class Ordine(models.Model):
-    nome = models.CharField(max_length=100)
-
-
-class Regione(models.Model):
-    nome = models.CharField(max_length=30)

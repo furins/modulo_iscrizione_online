@@ -45,8 +45,10 @@
                   rounded
                   color="negative"
                   label="Iscriviti alla newsletter"
+                  href="https://www.cirf.org/it/contatti-cirf/"
                   class="q-ma-md bottone"
                   size="md"
+                  type="a"
                 />
                 <q-btn
                   unelevated

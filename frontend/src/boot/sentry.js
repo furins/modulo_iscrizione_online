@@ -11,3 +11,4 @@ Sentry.init({
     // for finer control
     tracesSampleRate: 1.0,
 });
+Vue.prototype.$sentry = Sentry

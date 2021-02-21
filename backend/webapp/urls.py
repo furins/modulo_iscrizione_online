@@ -9,6 +9,8 @@ admin.site.index_title = 'Amministrazione eventi'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('csrf/', iscrizioni.views.csrf),
+    path('confirm/<str:token>/', iscrizioni.views.confirm_email),
     path('api/list/', iscrizioni.views.list_eventi),
     path('api/events/<slug:slug>/', iscrizioni.views.campi_form),
     path('api/events/<slug:slug>/subscribe/', iscrizioni.views.subscribe),
