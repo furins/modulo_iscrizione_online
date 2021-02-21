@@ -91,11 +91,17 @@ def subscribe(request, slug):
     utente.nome = truncate_string(dati.get('nome'), 100)
     utente.cognome = truncate_string(dati.get('cognome'), 100)
     utente.accettazione_privacy = dati.get('accettazione_privacy', True)
-    utente.codice_fiscale = truncate_string(dati.get('codice_fiscale'), 16)
-    utente.matricola_ordine = truncate_string(dati.get('matricola_ordine'), 50)
-    utente.regione = dati.get('regione')
-    utente.provincia = truncate_string(dati.get('provincia'), 2)
-    utente.ordine_di_appartenenza = dati.get('ordine_di_appartenenza')
+    if dati.get('codice_fiscale').strip() != '':
+        utente.codice_fiscale = truncate_string(dati.get('codice_fiscale'), 16)
+    if dati.get('matricola_ordine').strip() != '':
+        utente.matricola_ordine = truncate_string(
+            dati.get('matricola_ordine'), 50)
+    if dati.get('regione').strip() != '':
+        utente.regione = dati.get('regione')
+    if dati.get('provincia').strip() != '':
+        utente.provincia = truncate_string(dati.get('provincia'), 2)
+    if dati.get('ordine_di_appartenenza').strip() != '':
+        utente.ordine_di_appartenenza = dati.get('ordine_di_appartenenza')
     utente.save()
 
     send_confirmation_email(iscrizione)

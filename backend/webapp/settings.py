@@ -16,11 +16,14 @@ import environ
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+ADMINS = [('Stefano', 'furins@gmail.com')]
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
     CORS_ALLOWED_ORIGINS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, []),
 )
 
 # reading .env file
@@ -38,7 +41,7 @@ sentry_sdk.init(
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APP_VERSION = '1.0.15'
+APP_VERSION = '1.0.19'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -58,6 +61,8 @@ EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
+EMAIL_TIMEOUT = 30
 
 # Application definition
 
@@ -166,5 +171,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # path da configurare solo per la macchina di development, in quanto in produzione non si ha mai accesso alla cartella
-STATIC_ROOT = os.path.join(BASE_DIR, '../dist/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, env('STATIC_ROOT_RELATIVE'))
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'

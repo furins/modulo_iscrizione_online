@@ -41,6 +41,8 @@ cd backend
 python manage.py collectstatic --clear
 cd - > /dev/null
 
+## gsed -i "s=environ\.Env\.read_env('\.\./\.env')=environ\.Env\.read_env('\./\.env')=" ./dist/cirf/webapp/settings.py
+
 # licenze proprie e di terze parti
 licen mit > $DIST_DIR/LICENSE.md
 echo -e "\r\n\r\n- [NPM PACKAGES USED BY THIS APP] -\r\n" > $DIST_DIR/THIRD_PARTY_LICENSES.md
