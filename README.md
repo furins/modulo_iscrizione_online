@@ -10,13 +10,28 @@ eseguire i seguenti comandi
 
 # DEVELOPMENT
 
+## inizializzazione
+
     ./dev init
+
+## durante lo sviluppo/test
+
+per avviare il database
+
     ./dev db start
     ./dev db stop
 
+per avviare il backend
+
+    ./dev backend
+
+per avviare il frontend
+
+    ./dev frontent
+
 # DEPLOYMENT
 
-TBD
+    ./build && ./deploy
 
 # CREDITS
 
