@@ -24,7 +24,7 @@ def list_eventi(request):
     risposta = {"eventi": [
         {
             'titolo': evt['nome_evento'],
-            'descrizione': evt['descrizione'],
+            'descrizione': evt['descrizione'].split('\n')[0],
             'slug': evt['slug']
         } for evt in eventi
     ]}
