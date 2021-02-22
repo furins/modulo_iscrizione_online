@@ -52,8 +52,11 @@ class IscrizioneResource(resources.ModelResource):
 @admin.register(Iscrizione)
 class IscrizioneAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = IscrizioneResource
-    formats = [import_export.formats.base_formats.CSV,
-               import_export.formats.base_formats.XLS, import_export.formats.base_formats.XLSX]
+    formats = [
+        # import_export.formats.base_formats.CSV,
+        import_export.formats.base_formats.XLS,
+        # import_export.formats.base_formats.XLSX
+    ]
 
     def get_cognome(self, obj):
         return obj.iscritto.cognome
@@ -62,8 +65,8 @@ class IscrizioneAdmin(ExportMixin, admin.ModelAdmin):
 
     def get_nome(self, obj):
         return obj.iscritto.nome
-    get_cognome.admin_order_field = 'iscritto__nome'
-    get_cognome.short_description = 'nome'
+    get_nome.admin_order_field = 'iscritto__nome'
+    get_nome.short_description = 'nome'
 
     list_display = ('get_cognome', 'get_nome', 'evento',
                     'pagamento_ricevuto', 'data_iscrizione', 'iscrizione_newsletter')
