@@ -17,7 +17,7 @@
               outline
               color="negative"
               label="Torna alla home"
-              to="/"
+              href="https://www.cirf.org/"
               class="q-ma-md bottone"
               size="md"
               type="a"
