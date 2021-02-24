@@ -2,7 +2,7 @@
 
 - [ ] CORS/CRSF per axios
 - [ ] risolvere il problema del deployment (vedi https://www.reddit.com/r/learnpython/comments/333lee/uwsgi_stops_how_do_i_prevent_that/)
-- [ ] la descrizione non rispetta gli "a capo" inseriti nel testo
+- [ ] nell'amministrazione le inline mostrano intestazioni che non servono, ma non riesco a nasconderle con il css
 
 # NEW FEATURES
 

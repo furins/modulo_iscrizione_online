@@ -2,7 +2,7 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from uuslug import uuslug as slugify
-from .models import Evento, Utente, Iscrizione
+from .models import Evento, Utente, Iscrizione, Attivita, PartecipazioneAttivita
 
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
@@ -34,6 +34,17 @@ def list_eventi(request):
 def campi_form(request, slug):
     """trasmette al template le informazioni necessarie a restituire il form di iscrizione"""
     evento = Evento.objects.get(slug=slug)
+    attivita = Attivita.objects.filter(
+        evento=evento).order_by('inizio_attivita', 'ordine')
+    attivita_previste = [{
+        'pk': el.pk,
+        'nome': f'{el.get_tipo_attivita_display()}: {el.nome}',
+        'inizio': el.inizio_attivita,
+        'descrizione': el.descrizione,
+        'opzionale': el.opzionale,
+        'iscritto': False
+    } for el in attivita]
+
     risposta = {'evento': {
         'titolo': evento.nome_evento,
         'descrizione': evento.descrizione,
@@ -41,6 +52,8 @@ def campi_form(request, slug):
         'slug': evento.slug,
         'link': evento.link,
         'testo_link': evento.testo_link,
+        'istruzioni_finali': evento.istruzioni_finali,
+        'attivita': attivita_previste
     }}
     return JsonResponse(risposta)
 
@@ -104,7 +117,16 @@ def subscribe(request, slug):
         utente.ordine_di_appartenenza = dati.get('ordine_di_appartenenza')
     utente.save()
 
-    send_confirmation_email(iscrizione)
+    elenco_attivita = Attivita.objects.filter(id__in=dati['attivita'])
+
+    for attivita in elenco_attivita:
+        partecipazione = PartecipazioneAttivita(
+            iscritto=iscrizione,
+            attivita=attivita
+        )
+        partecipazione.save()
+
+    send_confirmation_email(iscrizione, attivita=elenco_attivita)
 
     risposta = {}  # se va tutto bene non aggiungo nulla
     return JsonResponse(risposta)

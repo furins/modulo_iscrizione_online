@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Evento, Utente, Iscrizione, AccreditamentoOrdine
+from .models import Evento, Utente, Iscrizione, AccreditamentoOrdine, Attivita, PartecipazioneAttivita
 from django.db import models
 from django.forms import Textarea
 import import_export
@@ -49,9 +49,22 @@ class IscrizioneResource(resources.ModelResource):
                   'iscritto__matricola_ordine', 'iscritto__regione', 'iscritto__provincia')
 
 
+class AttivitaPartecipateInline(admin.TabularInline):
+    model = PartecipazioneAttivita
+    readonly_fields = ('attivita',)
+    extra = 0
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(Iscrizione)
 class IscrizioneAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = IscrizioneResource
+    inlines = (AttivitaPartecipateInline,)
     formats = [
         # import_export.formats.base_formats.CSV,
         import_export.formats.base_formats.XLS,
@@ -73,6 +86,9 @@ class IscrizioneAdmin(ExportMixin, admin.ModelAdmin):
     list_select_related = ('iscritto',)
     list_filter = ('evento', 'pagamento_ricevuto', 'iscrizione_newsletter')
 
+    class Media:
+        css = {"all": ("/css/nascondi_inline_info.css",)}
+
 
 class AccreditamentoOrdineInline(admin.TabularInline):
     model = AccreditamentoOrdine
@@ -90,6 +106,46 @@ class EventoAdmin(admin.ModelAdmin):
     # FIXME vanno implementati in futuro
     exclude = ('immagine', 'inizio_iscrizioni',
                'termine_iscrizioni', 'richiede_autenticazione')
+
+
+class UtentiPartecipantiInline(admin.TabularInline):
+    model = PartecipazioneAttivita
+    readonly_fields = ('iscritto',)
+    extra = 0
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Attivita)
+class AttivitaAdmin(admin.ModelAdmin):
+    inlines = (UtentiPartecipantiInline, )
+
+
+@admin.register(PartecipazioneAttivita)
+class PartecipazioneAttivitaAdmin(admin.ModelAdmin):
+    list_display = ('get_nome_iscritto', 'get_evento', 'get_attivita')
+    list_select_related = ('iscritto',)
+
+    def get_nome_iscritto(self, obj):
+        return obj.iscritto.iscritto
+    get_nome_iscritto.admin_order_field = 'iscritto__iscritto'
+    get_nome_iscritto.short_description = 'iscritto'
+
+    def get_evento(self, obj):
+        return obj.iscritto.evento
+    get_evento.admin_order_field = 'iscritto__evento'
+    get_evento.short_description = 'evento'
+
+    def get_attivita(self, obj):
+        return f'{obj.attivita.get_tipo_attivita_display()} "{obj.attivita.nome}"'
+    get_attivita.admin_order_field = 'attivita__nome'
+    get_attivita.short_description = 'attivita'
+
+    filter = ('attivita', 'attivita__evento')
 
 
 # @admin.register(AccreditamentoOrdine)

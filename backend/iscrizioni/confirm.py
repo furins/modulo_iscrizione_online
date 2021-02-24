@@ -33,11 +33,12 @@ def check_token(token):
     return iscrizione.iscritto
 
 
-def send_confirmation_email(iscrizione):
+def send_confirmation_email(iscrizione, attivita=[]):
     context = {
         'iscrizione': iscrizione,
         'token': token_generator(iscrizione),
-        'dominio': settings.SITE_URL
+        'dominio': settings.SITE_URL,
+        'attivita': attivita
     }
 
     text = render_to_string('email/confirmation.txt', context)

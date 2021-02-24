@@ -10,6 +10,11 @@
       :slug="$route.params.evento"
       v-if="eventData.modello_form_evento === 'default' || eventData.modello_form_evento === ''"
     />
+    <DefaultFormConAttivita
+      :eventData="eventData"
+      :slug="$route.params.evento"
+      v-else-if="eventData.modello_form_evento === 'con_attivita'"
+    />
   </q-page>
 </template>
 
@@ -29,11 +34,13 @@
 
 <script>
 import DefaultForm from "../components/DefaultForm.vue";
+import DefaultFormConAttivita from "../components/DefaultFormConAttivita.vue";
 
 export default {
   name: "Iscrizione",
   components: {
-    DefaultForm
+    DefaultForm,
+    DefaultFormConAttivita
   },
   data() {
     return {

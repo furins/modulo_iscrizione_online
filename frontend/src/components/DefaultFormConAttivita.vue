@@ -51,6 +51,34 @@
             :rules="[ val => val && val.length > 9 && val.includes('@') && val.includes('.') || 'Per favore inserisci un\'email valida']"
           />
         </div>
+
+        <div class="text-h6 q-my-lg text-primary">Seminari a cui si desidera partecipare:</div>
+
+        <q-list class="row" style="background-color: #EEE">
+          <q-item
+            class="col-12"
+            tag="label"
+            v-ripple
+            v-for="attivita in eventData.attivita"
+            :key="attivita.pk"
+          >
+            <q-item-section side top>
+              <q-checkbox v-model="attivita.iscritto" v-if="attivita.opzionale" />
+              <span style="width: 40px;" v-else>&nbsp;</span>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label overline>
+                <span
+                  v-if="attivita.inizio !== '' && attivita.inizio !== null"
+                >{{DateTime.fromISO(attivita.inizio).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY).toUpperCase() }}</span>
+              </q-item-label>
+              <q-item-label>{{attivita.nome}}</q-item-label>
+              <q-item-label caption>{{attivita.descrizione}}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <div class="text-h6 q-my-lg text-primary">Altre informazioni:</div>
+
         <q-list class="row">
           <q-item tag="label" v-ripple class="col-12 q-mt-lg">
             <q-item-section avatar top>
@@ -135,7 +163,6 @@
         <div class="row">
           <p class="prespaced col-12">{{eventData.istruzioni_finali}}</p>
         </div>
-
         <div class="text-right">
           <q-btn
             label="Torna indietro"
@@ -181,9 +208,10 @@
 
 <script>
 import * as Sentry from "@sentry/vue";
+var { DateTime } = require("luxon");
 
 // attenzione devono coincidere con  quanto indicato in /backend/iscrizioni/models.py
-let regioni = [
+const regioni = [
   "Abruzzo",
   "Basilicata",
   "Calabria",
@@ -206,7 +234,7 @@ let regioni = [
   "Veneto"
 ];
 
-let ordini_professionali = [
+const ordini_professionali = [
   "Consiglio nazionale ingegneri",
   "Consiglio nazionale architetti, pianificatori, paesaggisti e conservatori",
   "Consiglio nazionale dei chimici",
@@ -215,8 +243,13 @@ let ordini_professionali = [
   "Ordine nazionale dei dottori agronomi e dottori forestali"
 ];
 
+// const localizzazione = {
+//   dayNames: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+//   monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
+// }
+
 export default {
-  name: "DefaultForm",
+  name: "DefaultFormConAttivita",
   props: ["eventData", "slug"],
   data() {
     return {
@@ -233,7 +266,9 @@ export default {
       ordine_di_appartenenza: "",
       regioni: regioni,
       ordini_professionali: ordini_professionali,
-      loading: false
+      iscrizione_attivita: [],
+      loading: false,
+      DateTime: DateTime
     };
   },
   methods: {
@@ -256,6 +291,10 @@ export default {
             .then(response => {
               // attendere esito dell'invio e mostrare messaggio
               token = response.data.csrfToken;
+              const attivita_richieste = this.eventData.attivita
+                .filter(obj => obj.iscritto)
+                .map(k => k.pk);
+
               console.log(token);
               this.$axios
                 .post(
@@ -275,7 +314,8 @@ export default {
                     regione: this.regione,
                     provincia: this.provincia,
                     ordine_di_appartenenza: this.ordine_di_appartenenza,
-                    csrfmiddlewaretoken: token
+                    csrfmiddlewaretoken: token,
+                    attivita: attivita_richieste
                   },
                   { headers: { "X-CSRFToken": token } }
                 )

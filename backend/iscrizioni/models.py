@@ -140,6 +140,7 @@ class AllegatoIscrizione(models.Model):
 
 class TemplateEvento(models.TextChoices):
     DEFAULT = 'default', _('Default')
+    CON_ATTIVITA = 'con_attivita', _('Con selezione attività')
 
 
 class Evento(models.Model):
@@ -149,6 +150,8 @@ class Evento(models.Model):
     link = models.URLField(blank=True)
     testo_link = models.CharField(max_length=100, blank=True)
     immagine = models.ImageField(blank=True, null=True)
+    istruzioni_finali = models.TextField(
+        blank=True, help_text="Inserire un testo che apparirà alla fine del form di iscrizione (opzionale)")
 
     istruzioni_email = models.TextField(
         blank=True, help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale)")
@@ -229,17 +232,60 @@ class AccreditamentoOrdine(models.Model):
         return f"{self.ordine} della regione {self.regione} per l'evento {self.evento}"
 
 
+class TipoAttivita(models.TextChoices):
+    SEMINARIO = 'seminario', _('Seminario')
+    WORKSHOP = 'workshop', _('Workshop')
+    WEBINAR = 'webinar', _('Webinar')
+    PRANZO_SOCIALE = 'pranzo_sociale', _('Pranzo sociale')
+    FIELD_TRIP = 'field_trip', _('Field trip')
+
+
 class Attivita(models.Model):
     nome = models.CharField(max_length=100)
-    descrizione = models.TextField()
+    tipo_attivita = models.CharField(
+        max_length=20, choices=TipoAttivita.choices, default=TipoAttivita.SEMINARIO)
     evento = models.ForeignKey('Evento', on_delete=models.CASCADE)
-    inizio_attivita = models.DateTimeField(null=True)
-    termine_attivita = models.DateTimeField(null=True)
-    crediti_riconosciuti = models.DecimalField(max_digits=5, decimal_places=2)
-    opzionale = models.BooleanField(default=False)
+
+    descrizione = models.TextField(blank=True)
+    istruzioni_email = models.TextField(
+        blank=True, help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale). Può essere usata per indicare la password del webinar. Per il link invece usare l'apposita casella qui sotto.")
+    link = models.URLField(blank=True)
+    testo_link = models.CharField(max_length=100, blank=True)
+    mostra_link_nel_modulo_iscrizione = models.BooleanField(
+        default=False, help_text="mostrandolo nel modulo di iscrizione, sarà accessibile a tutti, anche i non iscritti. Normalmente è bene che non sia spuntata questa casella.")
+
+    inizio_attivita = models.DateTimeField(null=True, blank=True)
+    termine_attivita = models.DateTimeField(null=True, blank=True)
+    crediti_riconosciuti = models.BooleanField(
+        default=True, help_text="I crediti verranno riconosciuti solo se sono previsti anche a livello di evento. Normalmente è sicuro lasciare questa casella spuntata.")
+    valore_crediti_riconosciuti = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal(1.0), blank=True)
+    opzionale = models.BooleanField(default=True)
+    ordine = models.IntegerField(
+        blank=True, default=0, help_text="Se due attività hanno la stessa data/ora, mostra prima quella che avrà il valore 'ordine' più basso.")
+
+    def __str__(self):
+        return f'{self.get_tipo_attivita_display()} "{self.nome}" durante "{self.evento.nome_evento}"'
+
+    class Meta:
+        verbose_name = 'attività'
+        verbose_name_plural = "attività"
 
 
 class PartecipazioneAttivita(models.Model):
-    iscritto = models.ForeignKey('Utente', on_delete=models.CASCADE)
+    iscritto = models.ForeignKey('Iscrizione', on_delete=models.CASCADE)
     attivita = models.ForeignKey('Attivita', on_delete=models.CASCADE)
-    data_partecipazione = models.DateTimeField(auto_now_add=True)
+    data_iscrizione = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"iscrizione di {self.iscritto.iscritto} al {self.attivita}"
+
+    def clean(self):
+        if self.iscritto.evento != self.attivita.evento:
+            raise ValidationError(
+                f"l'utente {self.iscritto.iscritto} non è iscritto all'evento in cui è prevista questa attività ({self.attivita.evento})")
+        super(PartecipazioneAttivita, self).clean()
+
+    class Meta:
+        verbose_name = 'iscrizione singola attività'
+        verbose_name_plural = "iscrizioni singola attività"

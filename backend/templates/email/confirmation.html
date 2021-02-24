@@ -1,6 +1,16 @@
 Gent.le {{iscrizione.iscritto.nome}} {{iscrizione.iscritto.cognome}},<br />
 Abbiamo ricevuto la vostra iscrizione a
-<b>{{iscrizione.evento.nome_evento}}</b>. <br /><br />
+<b>{{iscrizione.evento.nome_evento}}</b>.
+{% if iscrizione.evento.istruzioni_email %}<br/>{{iscrizione.evento.istruzioni_email|linebreaks}}{% endif %}
+{% if attivita %}
+<br />Attività a cui si è iscritto/a:<br/>
+<dl>
+    {% for a in attivita %}
+    <dt>{{a.inizio_attivita}} - {{a.tipo_attivita}}: {{a.nome}}</dt>
+    <dd>{{a.istruzioni_email}}{% if a.link %}<br><a href="{{a.link}}">{{a.testo_link}}</a>{% endif %}</dd>
+    {% endfor %}
+</dl>
+{% endif %}<br /><br />
 <b>IMPORTANTE!</b><br />
 Per confermare l'iscrizione e validare la vostra email vi chiediamo gentilmente
 di visitare il seguente link:
