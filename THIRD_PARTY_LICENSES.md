@@ -9,8 +9,9 @@ kessler     stuff       @sentry/tracing  perpetual       material               
 kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.2.0           6.2.0              Sentry
 kessler     stuff       axios            perpetual       material                 MIT           git+https://github.com/axios/axios.git             0.18.1          0.18.1             Matt Zabriskie
 kessler     stuff       core-js          perpetual       material                 MIT           git+https://github.com/zloirock/core-js.git        3.9.0           3.6.5              n/a
+kessler     stuff       luxon            perpetual       material                 MIT           git+https://github.com/moment/luxon.git            1.26.0          1.26.0             Isaac Cambron
 kessler     stuff       quasar           perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.15.4          1.0.0              Razvan Stoenescu
-kessler     stuff       vue-i18n         perpetual       material                 MIT           git+https://github.com/kazupon/vue-i18n.git        8.22.4          8.0.0              kazuya kawaguchi
+kessler     stuff       vue-i18n         perpetual       material                 MIT           git+https://github.com/kazupon/vue-i18n.git        8.23.0          8.0.0              kazuya kawaguchi
 
 
 - [PYTHON PACKAGES USED BY THIS APP] -
@@ -9421,6 +9422,18 @@ Files located in the node_modules and vendor directories are externally
 maintained libraries used by this software which have their own
 licenses; we recommend you read them, as their terms may differ from the
 terms above.
+
+-----
+
+The following software may be included in this product: luxon. A copy of the source code may be downloaded from https://github.com/moment/luxon. This software contains the following license and notice below:
+
+Copyright 2019 JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -----
 

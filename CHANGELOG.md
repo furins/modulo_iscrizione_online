@@ -1,10 +1,11 @@
 # Changelog
 
-## 1.0.22 (2021-02-24)
+## 1.0.23 (2021-02-24)
 
 ### Bug Fixes
 
 - [x] la descrizione non rispetta gli "a capo" inseriti nel testo
+- [x] risolto il problema del deployment
 
 ### Features
 

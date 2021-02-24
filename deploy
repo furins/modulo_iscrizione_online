@@ -3,5 +3,5 @@ rsync -r dist/static/ opalstack:/home/dolomiti/apps/eventi_cirf/static
 rsync -r dist/cirf/ opalstack:/home/dolomiti/apps/eventi_cirf/cirf
 
 echo "riavvio i server"
-ssh opalstack '/home/dolomiti/apps/eventi_cirf/stop && sleep 2 && echo "procedo"'
-ssh opalstack '/home/dolomiti/apps/eventi_cirf/start && sleep 2 && echo "termino"'
+ssh opalstack 'sed -i "s|\.\./\.env|/home/dolomiti/apps/eventi_cirf/\.env|" /home/dolomiti/apps/eventi_cirf/cirf/webapp/settings.py'
+ssh opalstack 'touch /home/dolomiti/apps/eventi_cirf/cirf/webapp/wsgi.py'
