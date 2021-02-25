@@ -52,7 +52,7 @@
           />
         </div>
 
-        <div class="text-h6 q-my-lg text-primary">Seminari a cui si desidera partecipare:</div>
+        <div class="text-h6 q-my-lg text-primary">Attività a cui si desidera partecipare:</div>
 
         <q-list class="row" style="background-color: #EEE">
           <q-item

@@ -7,7 +7,7 @@ Abbiamo ricevuto la vostra iscrizione a
 <dl>
     {% for a in attivita %}
     <dt>{{a.inizio_attivita}} - {{a.tipo_attivita}}: {{a.nome}}</dt>
-    <dd>{{a.istruzioni_email}}{% if a.link %}<br><a href="{{a.link}}">{{a.testo_link}}</a>{% endif %}</dd>
+    <dd>{{a.istruzioni_email|linebreaks}}{% if a.link %}<br><a href="{{a.link}}">{{a.testo_link}}</a>{% endif %}</dd>
     {% endfor %}
 </dl>
 {% endif %}<br /><br />
