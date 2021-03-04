@@ -22,7 +22,9 @@ gsed -i "s/APP_VERSION = .*/APP_VERSION = '$NEXTVERSION'/" ./backend/webapp/sett
 
 cd frontend
 icongenie generate -i icon.png
+gsed -i "s=http://localhost:8000=https://eventi.cirf.org=" ./.env.dev
 quasar build
+gsed -i "s=https://eventi\.cirf\.org=http://localhost:8000=" ./.env.dev
 cd - > /dev/null
 
 cd backend

@@ -4,7 +4,7 @@
 
 department  related to  name             license period  material / not material  license type  link                                               remote version  installed version  author
 ----------  ----------  ----             --------------  -----------------------  ------------  ----                                               --------------  -----------------  ------
-kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.9.17          1.0.0              Razvan Stoenescu
+kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.9.18          1.0.0              Razvan Stoenescu
 kessler     stuff       @sentry/tracing  perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.2.0           6.2.0              Sentry
 kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.2.0           6.2.0              Sentry
 kessler     stuff       axios            perpetual       material                 MIT           git+https://github.com/axios/axios.git             0.18.1          0.18.1             Matt Zabriskie

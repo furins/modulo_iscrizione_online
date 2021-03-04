@@ -175,7 +175,6 @@ class Evento(models.Model):
         ordering = ['-inizio_iscrizioni']
 
     def save(self, **kwargs):
-        self.slug = slugify(self.nome_evento, instance=self)
         super(Evento, self).save(**kwargs)
 
     def __str__(self):

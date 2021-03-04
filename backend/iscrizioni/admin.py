@@ -125,10 +125,47 @@ class AttivitaAdmin(admin.ModelAdmin):
     inlines = (UtentiPartecipantiInline, )
 
 
+class PartecipazioneAttivitaResource(resources.ModelResource):
+    iscritto__iscritto__nome = Field(
+        attribute='iscritto__iscritto__nome', column_name='Nome')
+    iscritto__iscritto__cognome = Field(
+        attribute='iscritto__iscritto__cognome', column_name='Cognome')
+    iscritto__iscritto__email = Field(
+        attribute='iscritto__iscritto__email', column_name='Email')
+    iscritto__richiede_crediti = Field(
+        attribute='iscritto__richiede_crediti', column_name='Desidera crediti',
+        widget=CustomBooleanWidget())
+    iscritto__iscritto__codice_fiscale = Field(
+        attribute='iscritto__iscritto__codice_fiscale', column_name='Cod.Fisc.')
+    iscritto__iscritto__ordine_di_appartenenza = Field(
+        attribute='iscritto__iscritto__ordine_di_appartenenza', column_name='Ordine')
+    iscritto__iscritto__matricola_ordine = Field(
+        attribute='iscritto__iscritto__matricola_ordine', column_name='Matricola ordine')
+    iscritto__iscritto__regione = Field(
+        attribute='iscritto__iscritto__regione', column_name='Regione')
+    iscritto__iscritto__provincia = Field(
+        attribute='iscritto__iscritto__provincia', column_name='Provincia')
+    attivita__tipo_attivita = Field(
+        attribute='attivita__tipo_attivita', column_name='Tipo Attività')
+    attivita__nome = Field(
+        attribute='attivita__nome', column_name='Attività')
+    attivita__evento__nome = Field(
+        attribute='attivita__evento__nome', column_name='Evento')
+
+    class Meta:
+        model = PartecipazioneAttivita
+        fields = ('iscritto__iscritto__nome', 'iscritto__iscritto__cognome',
+                  'iscritto__iscritto__email', 'iscritto__richiede_crediti',
+                  'iscritto__iscritto__codice_fiscale', 'iscritto__iscritto__ordine_di_appartenenza',
+                  'iscritto__iscritto__matricola_ordine', 'iscritto__iscritto__regione', 'iscritto__iscritto__provincia',
+                  'attivita__nome', 'attivita__tipo_attivita', 'attivita__evento__nome')
+
+
 @admin.register(PartecipazioneAttivita)
-class PartecipazioneAttivitaAdmin(admin.ModelAdmin):
+class PartecipazioneAttivitaAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ('get_nome_iscritto', 'get_evento', 'get_attivita')
     list_select_related = ('iscritto',)
+    resource_class = PartecipazioneAttivitaResource
 
     def get_nome_iscritto(self, obj):
         return obj.iscritto.iscritto
@@ -145,8 +182,14 @@ class PartecipazioneAttivitaAdmin(admin.ModelAdmin):
     get_attivita.admin_order_field = 'attivita__nome'
     get_attivita.short_description = 'attivita'
 
-    filter = ('attivita', 'attivita__evento')
+    list_filter = ('attivita', 'attivita__evento')
+    search_fields = ['iscritto__iscritto__nome', 'iscritto__iscritto__cognome']
 
+    formats = [
+        # import_export.formats.base_formats.CSV,
+        import_export.formats.base_formats.XLS,
+        # import_export.formats.base_formats.XLSX
+    ]
 
 # @admin.register(AccreditamentoOrdine)
 # class AccreditamentoOrdineAdmin(admin.ModelAdmin):
