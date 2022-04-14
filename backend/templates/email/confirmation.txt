@@ -13,7 +13,5 @@ Attività a cui si è iscritto/a:
 IMPORTANTE! Per confermare l'iscrizione e validare la vostra email vi chiediamo gentilmente di visitare il seguente link:
 {{dominio}}/confirm/{{token}}/
 
-{{iscrizione.evento.istruzioni_email|safe}}
-
 Grazie per il vostro interesse per questa iniziativa!
 Il comitato organizzatore

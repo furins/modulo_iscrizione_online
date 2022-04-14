@@ -1,17 +1,16 @@
 version: '3.8'
 services:
   db:
-    image: postgres
-    restart: always
+    image: postgres:12-alpine
     environment:
       POSTGRES_PASSWORD: cirf
+      POSTGRES_DB: cirf
     ports:
       - '54320:5432'
     labels:
       it.iloa.container_prefix: '${APP_NAME}'
   adminer:
     image: adminer
-    restart: always
     ports:
       - 8080:8080
     labels:

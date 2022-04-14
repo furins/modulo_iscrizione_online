@@ -50,91 +50,8 @@
             lazy-rules
             :rules="[ val => val && val.length > 9 && val.includes('@') && val.includes('.') || 'Per favore inserisci un\'email valida']"
           />
-        </div>
-
-        <div class="text-h6 q-my-lg text-primary">Attività a cui si desidera partecipare:</div>
-
-        <q-list class="row" style="background-color: #EEE">
-          <q-item
-            class="col-12"
-            tag="label"
-            v-ripple
-            v-for="attivita in eventData.attivita"
-            :key="attivita.pk"
-          >
-            <q-item-section side top>
-              <q-checkbox v-model="attivita.iscritto" v-if="attivita.opzionale" />
-              <span style="width: 40px;" v-else>&nbsp;</span>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label overline>
-                <span
-                  v-if="attivita.inizio !== '' && attivita.inizio !== null"
-                >{{DateTime.fromISO(attivita.inizio).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY).toUpperCase() }}</span>
-              </q-item-label>
-              <q-item-label>{{attivita.nome}}</q-item-label>
-              <q-item-label caption>{{attivita.descrizione}}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <div class="text-h6 q-my-lg text-primary">Altre informazioni:</div>
-
-        <q-list class="row" v-if="eventData.crediti_riconosciuti">
-          <q-item tag="label" v-ripple class="col-12 q-mt-lg">
-            <q-item-section avatar top>
-              <q-checkbox v-model="desidera_crediti" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Richiesta crediti</q-item-label>
-              <q-item-label caption>Desidero siano riconosciuti crediti dal mio Ordine professionale</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <div v-if="desidera_crediti === true" class="row q-mt-sm q-mb-lg q-col-gutter-md">
-          <q-input
-            class="col-12 col-sm-6"
-            v-model="codice_fiscale"
-            autocomplete="codice_fiscale"
-            label="Codice Fiscale *"
-            hint="Inserisci il tuo codice fiscale"
-            lazy-rules
-            :rules="[ val => val && val.length > 8 || 'Per favore inserisci il tuo codice fiscale']"
-          />
-          <q-select
-            class="col-12 col-sm-6"
-            v-model="ordine_di_appartenenza"
-            :options="ordini_professionali"
-            label="Ordine professionale *"
-            hint="Inserisci l'Ordine professionale di appartenenza"
-          />
-          <q-select
-            class="col-12 col-sm-4"
-            autocomplete="region"
-            v-model="regione"
-            :options="regioni"
-            label="Regione *"
-            hint="Inserisci la Regione che ospita la sede dell'Ordine di appartenenza"
-          />
-          <q-input
-            class="col-12 col-sm-3"
-            v-model="provincia"
-            autocomplete="province"
-            label="Provincia"
-            hint="Inserisci la provincia che ospita la sede dell'Ordine di appartenenza"
-            lazy-rules
-            :rules="[ val => val && val.length == 2 || 'Per favore inserisci la sigla della provincia (2 caratteri)']"
-          />
-          <q-input
-            class="col-12 col-sm-3"
-            v-model="matricola_ordine"
-            autocomplete="matricola_ordine"
-            label="Num. iscrizione all'ordine *"
-            hint="Inserisci la matricola di iscrizione all'ordine"
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Per favore inserisci la tua matricola di iscrizione all\'ordine']"
-          />
-        </div>
-        <q-list class="row">
+        </div>        
+        <q-list class="row q-mt-lg">
           <q-item tag="label" v-ripple class="col-12">
             <q-item-section avatar top>
               <q-checkbox v-model="iscrizione_newsletter" />
@@ -163,6 +80,7 @@
         <div class="row">
           <p class="prespaced col-12">{{eventData.istruzioni_finali}}</p>
         </div>
+
         <div class="text-right">
           <q-btn
             label="Torna indietro"
@@ -208,10 +126,9 @@
 
 <script>
 import * as Sentry from "@sentry/vue";
-var { DateTime } = require("luxon");
 
 // attenzione devono coincidere con  quanto indicato in /backend/iscrizioni/models.py
-const regioni = [
+let regioni = [
   "Abruzzo",
   "Basilicata",
   "Calabria",
@@ -234,7 +151,7 @@ const regioni = [
   "Veneto"
 ];
 
-const ordini_professionali = [
+let ordini_professionali = [
   "Consiglio nazionale ingegneri",
   "Consiglio nazionale architetti, pianificatori, paesaggisti e conservatori",
   "Consiglio nazionale dei chimici",
@@ -243,13 +160,8 @@ const ordini_professionali = [
   "Ordine nazionale dei dottori agronomi e dottori forestali"
 ];
 
-// const localizzazione = {
-//   dayNames: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
-//   monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
-// }
-
 export default {
-  name: "DefaultFormConAttivita",
+  name: "DefaultFormSenzaOrdine",
   props: ["eventData", "slug"],
   data() {
     return {
@@ -266,9 +178,7 @@ export default {
       ordine_di_appartenenza: "",
       regioni: regioni,
       ordini_professionali: ordini_professionali,
-      iscrizione_attivita: [],
-      loading: false,
-      DateTime: DateTime
+      loading: false
     };
   },
   methods: {
@@ -291,10 +201,6 @@ export default {
             .then(response => {
               // attendere esito dell'invio e mostrare messaggio
               token = response.data.csrfToken;
-              const attivita_richieste = this.eventData.attivita
-                .filter(obj => obj.iscritto)
-                .map(k => k.pk);
-
               console.log(token);
               this.$axios
                 .post(
@@ -308,14 +214,13 @@ export default {
                     email: this.email,
                     iscrizione_newsletter: this.iscrizione_newsletter,
                     accettazione_privacy: this.accettazione_privacy,
-                    desidera_crediti: this.desidera_crediti,
+                    desidera_crediti: false,
                     codice_fiscale: this.codice_fiscale,
                     matricola_ordine: this.matricola_ordine,
                     regione: this.regione,
                     provincia: this.provincia,
                     ordine_di_appartenenza: this.ordine_di_appartenenza,
-                    csrfmiddlewaretoken: token,
-                    attivita: attivita_richieste
+                    csrfmiddlewaretoken: token
                   },
                   { headers: { "X-CSRFToken": token } }
                 )

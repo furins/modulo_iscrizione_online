@@ -19,12 +19,14 @@ mkdir -p $DIST_DIR
 
 gsed -i "s/version:.*,/version: '$NEXTVERSION',/" ./frontend/src/boot/version.js
 gsed -i "s/APP_VERSION = .*/APP_VERSION = '$NEXTVERSION'/" ./backend/webapp/settings.py
+gsed -i "s/SENTRY_RELEASE = .*/SENTRY_RELEASE = '$NEXTVERSION'/" ./backend/webapp/settings.py
+gsed -i "s/release:.*/release: '$NEXTVERSION'/" ./frontend/src/boot/sentry.js
 
 cd frontend
 icongenie generate -i icon.png
-gsed -i "s=http://localhost:8000=https://eventi.cirf.org=" ./.env.dev
+# gsed -i "s=http://localhost:8000=https://eventi.cirf.org=" ../.env.dev
 quasar build
-gsed -i "s=https://eventi\.cirf\.org=http://localhost:8000=" ./.env.dev
+# gsed -i "s=https://eventi\.cirf\.org=http://localhost:8000=" ../.env.dev
 cd - > /dev/null
 
 cd backend

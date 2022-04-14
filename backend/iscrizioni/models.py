@@ -140,6 +140,7 @@ class AllegatoIscrizione(models.Model):
 
 class TemplateEvento(models.TextChoices):
     DEFAULT = 'default', _('Default')
+    SENZA_ISCRIZIONE_ORDINE = 'no_ordine', _('Senza richiesta informazioni iscrizione all\'ordine')
     CON_ATTIVITA = 'con_attivita', _('Con selezione attività')
 
 
@@ -165,7 +166,8 @@ class Evento(models.Model):
 
     # slug viene usato per creare l'url dell'evento
     slug = models.SlugField(max_length=30, unique=True, blank=True)
-
+    crediti_riconosciuti = models.BooleanField(
+        default=True, help_text="Se sono previsti crediti per questo evento, spuntare questa casella.")
     # modello_form_evento è un descrittore per capire quale template usare per il form di iscrizione all'evento o per le pagine di supporto (landing page, descrizione...)
     modello_form_evento = models.CharField(
         max_length=20, choices=TemplateEvento.choices, default="default")
@@ -259,7 +261,7 @@ class Attivita(models.Model):
         default=True, help_text="I crediti verranno riconosciuti solo se sono previsti anche a livello di evento. Normalmente è sicuro lasciare questa casella spuntata.")
     valore_crediti_riconosciuti = models.DecimalField(
         max_digits=5, decimal_places=2, default=Decimal(1.0), blank=True)
-    opzionale = models.BooleanField(default=True)
+    opzionale = models.BooleanField(default=True, help_text="Se spuntato, permetterà all'utente di iscriversi all'attività. Se rimane vuoto allora diventa obbligatorio e non apparirà alcuna possibilità di selezionare: si dà per scontato che l'utente partecipi in ogni caso.")
     ordine = models.IntegerField(
         blank=True, default=0, help_text="Se due attività hanno la stessa data/ora, mostra prima quella che avrà il valore 'ordine' più basso.")
 

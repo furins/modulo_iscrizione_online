@@ -29,7 +29,7 @@ env = environ.Env(
 
 # reading .env file
 environ.Env.read_env('../.env')
-
+SENTRY_RELEASE = '1.0.33'
 sentry_sdk.init(
     dsn=env('DJANGO_SENTRY_DSN_URL'),
     integrations=[DjangoIntegration()],
@@ -37,12 +37,13 @@ sentry_sdk.init(
 
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
+    send_default_pii=True,
+    release=SENTRY_RELEASE
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APP_VERSION = '1.0.26'
+APP_VERSION = '1.0.33'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/

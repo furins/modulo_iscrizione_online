@@ -10,6 +10,11 @@
       :slug="$route.params.evento"
       v-if="eventData.modello_form_evento === 'default' || eventData.modello_form_evento === ''"
     />
+    <DefaultFormSenzaOrdine
+      :eventData="eventData"
+      :slug="$route.params.evento"
+      v-else-if="eventData.modello_form_evento === 'no_ordine'"
+    />
     <DefaultFormConAttivita
       :eventData="eventData"
       :slug="$route.params.evento"
@@ -35,12 +40,14 @@
 <script>
 import DefaultForm from "../components/DefaultForm.vue";
 import DefaultFormConAttivita from "../components/DefaultFormConAttivita.vue";
+import DefaultFormSenzaOrdine from "../components/DefaultFormSenzaOrdine.vue";
 
 export default {
   name: "Iscrizione",
   components: {
     DefaultForm,
-    DefaultFormConAttivita
+    DefaultFormConAttivita,
+    DefaultFormSenzaOrdine
   },
   data() {
     return {

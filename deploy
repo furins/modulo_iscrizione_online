@@ -1,7 +1,20 @@
-echo "carico i file..."
+NEXTRELEASE=$(cat development_tools/RELEASE)
+NEXTVERSION=$(cat development_tools/VERSION).$NEXTRELEASE
+
+echo "Pubblico la release ${NEXTVERSION}"
 rsync -r dist/static/ opalstack:/home/dolomiti/apps/eventi_cirf/static
 rsync -r dist/cirf/ opalstack:/home/dolomiti/apps/eventi_cirf/cirf
 
 echo "riavvio i server"
 ssh opalstack 'sed -i "s|\.\./\.env|/home/dolomiti/apps/eventi_cirf/\.env|" /home/dolomiti/apps/eventi_cirf/cirf/webapp/settings.py'
 ssh opalstack 'touch /home/dolomiti/apps/eventi_cirf/cirf/webapp/wsgi.py'
+
+curl https://sentry.io/api/hooks/release/builtin/5645541/06c10066f3c3a48415767e57be60c3d707b78b66535e8f9b5ff40cfa5b271cfc/ \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d "{\"version\": \"${NEXTVERSION}\"}"
+
+curl https://sentry.io/api/hooks/release/builtin/5645544/86e0cceff980d3f5936b5bc91f1de24fe2dc1c39cb535795dc8c58db68b2cff8/ \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d "{\"version\": \"${NEXTVERSION}\"}"

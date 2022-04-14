@@ -117,7 +117,7 @@ def subscribe(request, slug):
         utente.ordine_di_appartenenza = dati.get('ordine_di_appartenenza')
     utente.save()
 
-    elenco_attivita = Attivita.objects.filter(id__in=dati['attivita'])
+    elenco_attivita = Attivita.objects.filter(id__in=dati['attivita']) if 'attivita' in dati.keys() else []
 
     for attivita in elenco_attivita:
         partecipazione = PartecipazioneAttivita(

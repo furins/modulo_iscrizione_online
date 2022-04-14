@@ -4,14 +4,14 @@
 
 department  related to  name             license period  material / not material  license type  link                                               remote version  installed version  author
 ----------  ----------  ----             --------------  -----------------------  ------------  ----                                               --------------  -----------------  ------
-kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.9.18          1.0.0              Razvan Stoenescu
-kessler     stuff       @sentry/tracing  perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.2.0           6.2.0              Sentry
-kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.2.0           6.2.0              Sentry
+kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.10.4          1.0.0              Razvan Stoenescu
+kessler     stuff       @sentry/tracing  perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.4.0           6.2.0              Sentry
+kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.4.0           6.2.0              Sentry
 kessler     stuff       axios            perpetual       material                 MIT           git+https://github.com/axios/axios.git             0.18.1          0.18.1             Matt Zabriskie
-kessler     stuff       core-js          perpetual       material                 MIT           git+https://github.com/zloirock/core-js.git        3.9.0           3.6.5              n/a
-kessler     stuff       luxon            perpetual       material                 MIT           git+https://github.com/moment/luxon.git            1.26.0          1.26.0             Isaac Cambron
-kessler     stuff       quasar           perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.15.4          1.0.0              Razvan Stoenescu
-kessler     stuff       vue-i18n         perpetual       material                 MIT           git+https://github.com/kazupon/vue-i18n.git        8.23.0          8.0.0              kazuya kawaguchi
+kessler     stuff       core-js          perpetual       material                 MIT           git+https://github.com/zloirock/core-js.git        3.12.1          3.6.5              n/a
+kessler     stuff       luxon            perpetual       material                 MIT           git+https://github.com/moment/luxon.git            1.27.0          1.26.0             Isaac Cambron
+kessler     stuff       quasar           perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.15.15         1.0.0              Razvan Stoenescu
+kessler     stuff       vue-i18n         perpetual       material                 MIT           git+https://github.com/kazupon/vue-i18n.git        8.24.4          8.0.0              kazuya kawaguchi
 
 
 - [PYTHON PACKAGES USED BY THIS APP] -

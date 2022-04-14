@@ -52,12 +52,12 @@ EOF
         case $2 in
             start)
                 cd development_tools
-                docker-compose --env-file ../.env.dev up --detach
+                docker compose --env-file ../.env.dev up --detach
                 cd - > /dev/null
             ;;
             stop)
                 cd development_tools
-                docker-compose --env-file ../.env.dev stop
+                docker compose --env-file ../.env.dev stop
                 cd - > /dev/null
             ;;
             *)
