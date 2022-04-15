@@ -29,7 +29,7 @@ env = environ.Env(
 
 # reading .env file
 environ.Env.read_env('../.env')
-SENTRY_RELEASE = '1.0.33'
+SENTRY_RELEASE = '1.0.36'
 sentry_sdk.init(
     dsn=env('DJANGO_SENTRY_DSN_URL'),
     integrations=[DjangoIntegration()],
@@ -43,7 +43,7 @@ sentry_sdk.init(
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APP_VERSION = '1.0.33'
+APP_VERSION = '1.0.36'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/

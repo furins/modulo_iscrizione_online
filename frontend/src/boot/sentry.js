@@ -10,6 +10,6 @@ Sentry.init({
     // We recommend adjusting this value in production, or using tracesSampler
     // for finer control
     tracesSampleRate: 1.0,
-    release: '1.0.33'
+    release: '1.0.36'
 });
 Vue.prototype.$sentry = Sentry
