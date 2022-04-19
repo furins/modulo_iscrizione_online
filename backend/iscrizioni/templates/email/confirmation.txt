@@ -3,15 +3,18 @@ Abbiamo ricevuto la vostra iscrizione a {{iscrizione.evento.nome_evento}}.
 
 {% if iscrizione.evento.istruzioni_email %}{{iscrizione.evento.istruzioni_email|safe}}
 
-{% endif %}{% if attivita %}
+{% endif %}
+IMPORTANTE! Per confermare l'iscrizione e validare la vostra email vi chiediamo gentilmente di visitare il seguente link:
+{{dominio}}/confirm/{{token}}/
+
+{% if attivita %}
 Attività a cui si è iscritto/a:
 -------------------------------
 {% for a in attivita %}    * {{a.inizio_attivita}} - {{a.tipo_attivita}}: {{a.nome}}
 {% if a.link %}      {{a.istruzioni_email}}{% endif %}
 {% if a.link %}      {{a.testo_link}} {{a.link}}{% endif %}{% endfor %}
 {% endif %}
-IMPORTANTE! Per confermare l'iscrizione e validare la vostra email vi chiediamo gentilmente di visitare il seguente link:
-{{dominio}}/confirm/{{token}}/
+
 
 Grazie per il vostro interesse per questa iniziativa!
 Il comitato organizzatore
