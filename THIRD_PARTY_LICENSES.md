@@ -4,13 +4,13 @@
 
 department  related to  name             license period  material / not material  license type  link                                               remote version  installed version  author
 ----------  ----------  ----             --------------  -----------------------  ------------  ----                                               --------------  -----------------  ------
-kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.13.5          1.0.0              Razvan Stoenescu
-kessler     stuff       @sentry/tracing  perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.19.6          6.2.0              Sentry
-kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.19.6          6.2.0              Sentry
+kessler     stuff       @quasar/extras   perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.14.0          1.0.0              Razvan Stoenescu
+kessler     stuff       @sentry/tracing  perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.19.7          6.2.0              Sentry
+kessler     stuff       @sentry/vue      perpetual       material                 MIT           git://github.com/getsentry/sentry-javascript.git   6.19.7          6.2.0              Sentry
 kessler     stuff       axios            perpetual       material                 MIT           git+https://github.com/axios/axios.git             0.18.1          0.18.1             Matt Zabriskie
-kessler     stuff       core-js          perpetual       material                 MIT           git+https://github.com/zloirock/core-js.git        3.22.0          3.6.5              n/a
+kessler     stuff       core-js          perpetual       material                 MIT           git+https://github.com/zloirock/core-js.git        3.22.8          3.6.5              n/a
 kessler     stuff       luxon            perpetual       material                 MIT           git+https://github.com/moment/luxon.git            1.28.0          1.26.0             Isaac Cambron
-kessler     stuff       quasar           perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.18.10         1.0.0              Razvan Stoenescu
+kessler     stuff       quasar           perpetual       material                 MIT           git+https://github.com/quasarframework/quasar.git  1.19.1          1.0.0              Razvan Stoenescu
 kessler     stuff       vue-i18n         perpetual       material                 MIT           git+https://github.com/kazupon/vue-i18n.git        8.27.1          8.0.0              kazuya kawaguchi
 
 
@@ -25,10 +25,12 @@ kessler     stuff       vue-i18n         perpetual       material               
  watchdog           1.0.2         Apache Software License                                                              Yesudeep Mangalapilly                                                                                             http://github.com/gorakhargosh/watchdog                                   
  cryptography       3.3.1         Apache Software License; BSD License                                                 The cryptography developers                                                                                       https://github.com/pyca/cryptography                                      
  packaging          20.8          Apache Software License; BSD License                                                 Donald Stufft and individual contributors                                                                         https://github.com/pypa/packaging                                         
+ python-dateutil    2.8.2         Apache Software License; BSD License                                                 Gustavo Niemeyer                                                                                                  https://github.com/dateutil/dateutil                                      
  Django             4.0           BSD License                                                                          Django Software Foundation                                                                                        https://www.djangoproject.com/                                            
  Flask              1.1.2         BSD License                                                                          Armin Ronacher                                                                                                    https://palletsprojects.com/p/flask/                                      
  Jinja2             2.11.2        BSD License                                                                          Armin Ronacher                                                                                                    https://palletsprojects.com/p/jinja/                                      
  MarkupSafe         1.1.1         BSD License                                                                          Armin Ronacher                                                                                                    https://palletsprojects.com/p/markupsafe/                                 
+ OWSLib             0.25.0        BSD License                                                                          Sean Gillies                                                                                                      https://geopython.github.io/OWSLib                                        
  SoundFile          0.10.3.post1  BSD License                                                                          Bastian Bechtold                                                                                                  https://github.com/bastibe/PySoundFile                                    
  SpeechRecognition  3.8.1         BSD License                                                                          Anthony Zhang (Uberi)                                                                                             https://github.com/Uberi/speech_recognition#readme                        
  Werkzeug           0.16.1        BSD License                                                                          Armin Ronacher                                                                                                    https://palletsprojects.com/p/werkzeug/                                   
@@ -99,6 +101,7 @@ kessler     stuff       vue-i18n         perpetual       material               
  py                 1.10.0        MIT License                                                                          holger krekel, Ronny Pfannschmidt, Benjamin Peterson and others                                                   https://py.readthedocs.io/                                                
  pyflakes           2.3.1         MIT License                                                                          A lot of people                                                                                                   https://github.com/PyCQA/pyflakes                                         
  pyparsing          2.4.7         MIT License                                                                          Paul McGuire                                                                                                      https://github.com/pyparsing/pyparsing/                                   
+ pyproj             3.3.1         MIT License                                                                          Jeff Whitaker                                                                                                     https://github.com/pyproj4/pyproj                                         
  pytest             6.2.5         MIT License                                                                          Holger Krekel, Bruno Oliveira, Ronny Pfannschmidt, Floris Bruynooghe, Brianna Laugher, Florian Bruhin and others  https://docs.pytest.org/en/latest/                                        
  pytz               2020.5        MIT License                                                                          Stuart Bishop                                                                                                     http://pythonhosted.org/pytz                                              
  ruamel.yaml        0.16.12       MIT License                                                                          Anthon van der Neut                                                                                               https://sourceforge.net/p/ruamel-yaml/code/ci/default/tree                
@@ -17545,6 +17548,64 @@ found in LICENSE.APACHE or LICENSE.BSD. Contributions to this software is made
 under the terms of *both* these licenses.
 
 
+python-dateutil
+2.8.2
+Apache Software License; BSD License
+Copyright 2017- Paul Ganssle <paul@ganssle.io>
+Copyright 2017- dateutil contributors (see AUTHORS file)
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+The above license applies to all contributions after 2017-12-01, as well as
+all contributions that have been re-licensed (see AUTHORS file for the list of
+contributors who have re-licensed their code).
+--------------------------------------------------------------------------------
+dateutil - Extensions to the standard Python datetime module.
+
+Copyright (c) 2003-2011 - Gustavo Niemeyer <gustavo@niemeyer.net>
+Copyright (c) 2012-2014 - Tomi Pieviläinen <tomi.pievilainen@iki.fi>
+Copyright (c) 2014-2016 - Yaron de Leeuw <me@jarondl.net>
+Copyright (c) 2015-     - Paul Ganssle <paul@ganssle.io>
+Copyright (c) 2015-     - dateutil contributors (see AUTHORS file)
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+    * Neither the name of the copyright holder nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The above BSD License Applies to all code, even that also covered by Apache 2.0.
+
 Django
 4.0
 BSD License
@@ -17674,6 +17735,40 @@ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+OWSLib
+0.25.0
+BSD License
+BSD 3-Clause License
+
+Copyright (c) 2006, Ancient World Mapping Center
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 SoundFile
@@ -21550,6 +21645,30 @@ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+pyproj
+3.3.1
+MIT License
+Copyright (c) 2006-2018, Jeffrey Whitaker.
+Copyright (c) 2019-2022, Open source contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 

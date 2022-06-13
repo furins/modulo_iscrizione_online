@@ -5,7 +5,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from uuslug import uuslug as slugify
 from django.core.exceptions import ValidationError
-
+from datetime import date
+from django.utils import timezone
 
 class TipoRegione(models.TextChoices):
     ABRUZZO = "Abruzzo"
@@ -60,7 +61,8 @@ class Utente(models.Model):
     provincia = models.CharField(max_length=2, blank=True)
     ultima_modifica = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL, null=True, blank=True)  # nel caso si desideri dare accesso all'utente ad un area riservata
+                             on_delete=models.SET_NULL, null=True,
+                             blank=True)  # nel caso si desideri dare accesso all'utente ad un area riservata
 
     class Meta:
         verbose_name = 'utente registrato'
@@ -155,14 +157,16 @@ class Evento(models.Model):
         blank=True, help_text="Inserire un testo che apparirà alla fine del form di iscrizione (opzionale)")
 
     istruzioni_email = models.TextField(
-        blank=True, help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale)")
+        blank=True,
+        help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale)")
 
     iscrizione_aperta = models.BooleanField(default=True)
     inizio_iscrizioni = models.DateTimeField(blank=True, null=True)
     termine_iscrizioni = models.DateTimeField(blank=True, null=True)
 
     richiede_autenticazione = models.BooleanField(
-        default=False, help_text="spuntare questa casella se si desidera che l'utente possa accedere a una pagina dove potrà gestire la propria iscrizione, ad esempio per inviare un abstract")
+        default=False,
+        help_text="spuntare questa casella se si desidera che l'utente possa accedere a una pagina dove potrà gestire la propria iscrizione, ad esempio per inviare un abstract")
 
     # slug viene usato per creare l'url dell'evento
     slug = models.SlugField(max_length=30, unique=True, blank=True)
@@ -199,6 +203,7 @@ class NotificheAzioneEvento(models.Model):
     email = models.EmailField()
     messaggio = models.TextField()
 
+
 # TODO potrebbe essere utile inserire un programma
 
 
@@ -222,9 +227,11 @@ class AccreditamentoOrdine(models.Model):
         max_length=73, choices=TipoOrdine.choices
     )
     regione = models.CharField(
-        max_length=21, choices=TipoRegione.choices, blank=True, help_text="lasciare vuoto per indicare tutte le regioni")
+        max_length=21, choices=TipoRegione.choices, blank=True,
+        help_text="lasciare vuoto per indicare tutte le regioni")
     istruzioni = models.TextField(
-        blank=True, help_text="il testo verrà inserito nell'email di conferma iscrizione ed eventualmente ripetuto in email successive solo per gli utenti iscritti a questo evento e appartenenti a quest'ordine professionale.")
+        blank=True,
+        help_text="il testo verrà inserito nell'email di conferma iscrizione ed eventualmente ripetuto in email successive solo per gli utenti iscritti a questo evento e appartenenti a quest'ordine professionale.")
 
     class Meta:
         verbose_name_plural = 'accreditamenti ordini'
@@ -249,21 +256,38 @@ class Attivita(models.Model):
 
     descrizione = models.TextField(blank=True)
     istruzioni_email = models.TextField(
-        blank=True, help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale). Può essere usata per indicare la password del webinar. Per il link invece usare l'apposita casella qui sotto.")
+        blank=True,
+        help_text="Inserire un testo che apparirà nell'email di conferma dell'iscrizione all'evento (opzionale). Può essere usata per indicare la password del webinar. Per il link invece usare l'apposita casella qui sotto.")
     link = models.URLField(blank=True)
     testo_link = models.CharField(max_length=100, blank=True)
+
+    link_evento_avvenuto = models.URLField(blank=True, null=True, help_text="link da mostrare nell'email di iscrizione se l'evento ha già avuto luogo. Ad esempio può rimandare al video del webinar.")
+    testo_link_evento_avvenuto = models.CharField(max_length=100, blank=True, null=True, default="Informazioni sull'evento", help_text="Testo da mostrare nell'email di iscrizione se l'evento ha già avuto luogo. Ad esempio: 'Registrazione dell'evento'.")
+
     mostra_link_nel_modulo_iscrizione = models.BooleanField(
-        default=False, help_text="mostrandolo nel modulo di iscrizione, sarà accessibile a tutti, anche i non iscritti. Normalmente è bene che non sia spuntata questa casella.")
+        default=False,
+        help_text="mostrandolo nel modulo di iscrizione, sarà accessibile a tutti, anche i non iscritti. Normalmente è bene che non sia spuntata questa casella.")
 
     inizio_attivita = models.DateTimeField(null=True, blank=True)
     termine_attivita = models.DateTimeField(null=True, blank=True)
     crediti_riconosciuti = models.BooleanField(
-        default=True, help_text="I crediti verranno riconosciuti solo se sono previsti anche a livello di evento. Normalmente è sicuro lasciare questa casella spuntata.")
+        default=True,
+        help_text="I crediti verranno riconosciuti solo se sono previsti anche a livello di evento. Normalmente è sicuro lasciare questa casella spuntata.")
     valore_crediti_riconosciuti = models.DecimalField(
         max_digits=5, decimal_places=2, default=Decimal(1.0), blank=True)
-    opzionale = models.BooleanField(default=True, help_text="Se spuntato, permetterà all'utente di iscriversi all'attività. Se rimane vuoto allora diventa obbligatorio e non apparirà alcuna possibilità di selezionare: si dà per scontato che l'utente partecipi in ogni caso.")
+    opzionale = models.BooleanField(default=True,
+                                    help_text="Se spuntato, permetterà all'utente di iscriversi all'attività. Se rimane vuoto allora diventa obbligatorio e non apparirà alcuna possibilità di selezionare: si dà per scontato che l'utente partecipi in ogni caso.")
     ordine = models.IntegerField(
-        blank=True, default=0, help_text="Se due attività hanno la stessa data/ora, mostra prima quella che avrà il valore 'ordine' più basso.")
+        blank=True, default=0,
+        help_text="Se due attività hanno la stessa data/ora, mostra prima quella che avrà il valore 'ordine' più basso.")
+
+    @property
+    def finito(self):
+        if self.termine_attivita is not None:
+            return timezone.now() > self.termine_attivita
+        if self.inizio_attivita is not None:
+            return timezone.now() > self.inizio_attivita
+        return False
 
     def __str__(self):
         return f'{self.get_tipo_attivita_display()} "{self.nome}" durante "{self.evento.nome_evento}"'

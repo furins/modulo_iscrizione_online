@@ -61,9 +61,10 @@
             v-ripple
             v-for="attivita in eventData.attivita"
             :key="attivita.pk"
+            style="border-bottom: 1px solid lightgray"
           >
             <q-item-section side top>
-              <q-checkbox v-model="attivita.iscritto" v-if="attivita.opzionale" />
+              <q-checkbox v-model="attivita.iscritto" v-if="attivita.opzionale && !attivita.finito" />
               <span style="width: 40px;" v-else>&nbsp;</span>
             </q-item-section>
             <q-item-section>
@@ -71,9 +72,25 @@
                 <span
                   v-if="attivita.inizio !== '' && attivita.inizio !== null"
                 >{{DateTime.fromISO(attivita.inizio).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY).toUpperCase() }}</span>
+                <span v-if="attivita.finito" style="font-weight: bold"> - CONCLUSO</span>
               </q-item-label>
-              <q-item-label>{{attivita.nome}}</q-item-label>
-              <q-item-label caption>{{attivita.descrizione}}</q-item-label>
+              <q-item-label style="font-weight: bold; font-size: large">{{attivita.nome}}</q-item-label>
+              <q-item-label caption>{{attivita.descrizione}}
+                <div style="margin-top: 8px;margin-bottom: 20px;" v-if="attivita.finito && attivita.link_evento_avvenuto && attivita.link_evento_avvenuto !== ''">
+                  <q-btn
+                    rounded
+                    outline
+                    color="primary"
+                    :label="attivita.testo_link_evento_avvenuto"
+                    v-if="attivita.finito && attivita.link_evento_avvenuto && attivita.link_evento_avvenuto !== ''"
+                    size="sm"
+                    type="a"
+                    :href="attivita.link_evento_avvenuto"
+                  />
+                </div>
+                <span v-if="attivita.finito"></span>
+              </q-item-label>
+
             </q-item-section>
           </q-item>
         </q-list>

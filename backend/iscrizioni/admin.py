@@ -13,6 +13,7 @@ from import_export.widgets import BooleanWidget
 class UtenteAdmin(admin.ModelAdmin):
     list_display = ('cognome', 'nome', 'email', 'telefono',
                     'email_validata', 'ultima_modifica')
+    search_fields = ['nome', 'cognome']
 
 
 class CustomBooleanWidget(BooleanWidget):
@@ -85,6 +86,7 @@ class IscrizioneAdmin(ExportMixin, admin.ModelAdmin):
                     'pagamento_ricevuto', 'data_iscrizione', 'iscrizione_newsletter')
     list_select_related = ('iscritto',)
     list_filter = ('evento', 'pagamento_ricevuto', 'iscrizione_newsletter')
+    search_fields = ['iscritto__nome', 'iscritto__cognome']
 
     class Media:
         css = {"all": ("/css/nascondi_inline_info.css",)}

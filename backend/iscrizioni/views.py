@@ -42,7 +42,10 @@ def campi_form(request, slug):
         'inizio': el.inizio_attivita,
         'descrizione': el.descrizione,
         'opzionale': el.opzionale,
-        'iscritto': False
+        'iscritto': False,
+        'finito': el.finito,
+        'link_evento_avvenuto': el.link_evento_avvenuto,
+        'testo_link_evento_avvenuto': el.testo_link_evento_avvenuto,
     } for el in attivita]
 
     risposta = {'evento': {
