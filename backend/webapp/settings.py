@@ -27,8 +27,10 @@ env = environ.Env(
     TIMEZONE=(str, 'UTC'),
 )
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # reading .env file
-environ.Env.read_env('../.env')
+environ.Env.read_env((BASE_DIR / '..' / '.env').as_posix())
 SENTRY_RELEASE = '1.0.46'
 sentry_sdk.init(
     dsn=env('DJANGO_SENTRY_DSN_URL'),
@@ -42,7 +44,6 @@ sentry_sdk.init(
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 APP_VERSION = '1.0.46'
 
 # Quick-start development settings - unsuitable for production
